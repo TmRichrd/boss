@@ -1,16 +1,23 @@
 // import { LoginDTO } from './../dto/login';
 import { loginInterFace } from '../interface';
-import { Body, Provide, Inject } from '@midwayjs/decorator';
+import { Body, Provide, Inject, App } from '@midwayjs/decorator';
 import { InjectEntityModel } from '@midwayjs/orm';
 import { User } from '../entity/user';
 import { Repository } from 'typeorm';
 import { mailOptions } from '../../../config/config.mail';
 import { send } from '../../../utils';
 import { CacheManager } from '@midwayjs/cache';
+import { Context, Application } from 'egg';
 @Provide()
 export class UsersService {
   @Inject()
   cache: CacheManager;
+
+  @Inject()
+  ctx: Context;
+
+  @App()
+  app: Application;
 
   @InjectEntityModel(User)
   userModel: Repository<User>;
@@ -24,11 +31,10 @@ export class UsersService {
       return { code: 201, data: {}, message: '验证码有误，请重新输入' };
     if (code === codes) {
       const userQ = await this.userModel.findOne({ email });
-      
+
       if (userQ) {
         // 登录
         console.log('登录');
-        
       } else {
         let user = new User();
         user.name = email;
@@ -41,9 +47,18 @@ export class UsersService {
           'https://avatars.githubusercontent.com/u/49671013?s=120&v=4';
         user.createTime = new Date();
         const userResult = await this.userModel.save(user);
+        // 生成token
+        const token = this.app.jwt.sign(
+          {
+            id: userResult.id,
+          },
+          this.app.config.jwt.secret
+        );
+        let Users = await this.userModel.findOne({ id: userResult.id });
         return {
           code: 200,
-          data: userResult.id,
+          data: Users,
+          token: token,
           message: '操作成功',
         };
       }

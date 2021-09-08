@@ -9,7 +9,10 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + '_1630939292590_3691';
 
   // add your config here
-  config.middleware = [];
+  config.middleware = ['reportMiddleware', 'auth'];
+  config.jwt = {
+    secret: 'admin',
+  };
 
   config.midwayFeature = {
     // true 代表使用 midway logger
