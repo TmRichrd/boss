@@ -8,6 +8,7 @@ export default class Position extends Component {
       title: 'web前端',
     }
   }
+  componentDidMount() {}
   render() {
     return (
       <div className="">

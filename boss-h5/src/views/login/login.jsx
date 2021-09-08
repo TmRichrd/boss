@@ -7,7 +7,7 @@ class Login extends Component {
   }
   render() {
     return (
-      <div className="container">
+      <div className="container" style={{ background: '#f1f1f1' }}>
         <h3 className={style.logintitle}>456</h3>
         <LoginForm />
       </div>
