@@ -8,7 +8,10 @@ export class auth implements IWebMiddleware {
   resolve() {
     return async (ctx: Context, next: IMidwayWebNext) => {
       const token: any = ctx.request.header.token;
-      const authApi: Array<string> = ['/user/emailCode', '/user/email-login'];
+      const authApi: Array<string> = [
+        '/user/emailCode',
+        '/user/email-login'
+      ];
       const apiUrl: string = ctx.request.url;
       if (authApi.includes(apiUrl)) return await next();
       let decode = '';
@@ -21,7 +24,7 @@ export class auth implements IWebMiddleware {
           ctx.body = {
             code: 401,
             data: null,
-            msg: 'token失效！',
+            message: 'token失效！',
           };
           return;
         }
@@ -29,7 +32,7 @@ export class auth implements IWebMiddleware {
         ctx.body = {
           code: 401,
           data: null,
-          msg: 'token失效！',
+          message: 'token失效！',
         };
         return;
       }

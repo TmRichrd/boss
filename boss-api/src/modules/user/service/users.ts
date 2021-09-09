@@ -31,38 +31,42 @@ export class UsersService {
       return { code: 201, data: {}, message: '验证码有误，请重新输入' };
     if (code === codes) {
       const userQ = await this.userModel.findOne({ email });
-
-      if (userQ) {
-        // 登录
-        console.log('登录');
-      } else {
-        let user = new User();
-        user.name = email;
-        user.email = email;
-        user.identity = 1;
-        user.sex = 1;
-        user.type = 1;
-        user.status = 1;
-        user.headImg =
-          'https://avatars.githubusercontent.com/u/49671013?s=120&v=4';
-        user.createTime = new Date();
-        const userResult = await this.userModel.save(user);
-        // 生成token
-        const token = this.app.jwt.sign(
-          {
-            id: userResult.id,
-          },
-          this.app.config.jwt.secret
-        );
-        let Users = await this.userModel.findOne({ id: userResult.id });
-        return {
-          code: 200,
-          data: Users,
-          token: token,
-          message: '操作成功',
-        };
-      }
+      if (userQ.id) return this.userLogin(login);
+      return this.register(login);
     }
+  }
+  async userLogin(login: loginInterFace) {
+    const { email } = login;
+    let user = await this.userModel.findOne({ email });
+    const token = this.app.jwt.sign({ id: user.id },this.app.config.jwt.secret);
+    return {
+      code: 200,
+      data: user,
+      message: '登录成功',
+      token,
+    };
+  }
+  async register(login: loginInterFace) {
+    const { email } = login;
+    let user = new User();
+    user.name = email;
+    user.email = email;
+    user.identity = 1;
+    user.sex = 1;
+    user.type = 1;
+    user.status = 1;
+    user.headImg = 'https://avatars.githubusercontent.com/u/49671013?s=120&v=4';
+    user.createTime = new Date();
+    const userResult = await this.userModel.save(user);
+    // 生成token
+    const token = this.app.jwt.sign({id: userResult.id,},this.app.config.jwt.secret);
+    let Users = await this.userModel.findOne({ id: userResult.id });
+    return {
+      code: 200,
+      data: Users,
+      token: token,
+      message: '操作成功',
+    };
   }
   async getEmail(@Body() email: string) {
     let code = await this.randomCode();

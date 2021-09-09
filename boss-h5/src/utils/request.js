@@ -1,11 +1,13 @@
 import axios from "axios"
+import { Toast } from "antd-mobile"
+import { Redirect } from "react-router-dom"
 const request = axios.create({
   timeout: 10000,
 });
 // 添加请求拦截器
 request.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
-  config.headers['token'] = 'token'
+  config.headers['token'] = localStorage.getItem('token') || ''
   return config;
 }, function (error) {
   // 对请求错误做些什么
@@ -13,9 +15,8 @@ request.interceptors.request.use(function (config) {
 });
 
 // 添加响应拦截器
-request.interceptors.response.use(function (response) {
-  // 对响应数据做点什么
-  return response;
+request.interceptors.response.use(function (res) {
+  return res
 }, function (error) {
   // 对响应错误做点什么
   return Promise.reject(error);

@@ -1,0 +1,36 @@
+.header {
+  background-color: #1677ff;
+  height: 300px;
+  width: 100%;
+  color: #fff;
+  padding: 20px 16px 20px 16px;
+}
+.headeicon {
+  text-align: right;
+  margin-bottom: 30px;
+}
+.names {
+  flex: 1;
+  max-width: calc(100% - 90px);
+}
+.name {
+  font-size: 1.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+.userInfo {
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  font-size: 0.9375rem;
+}
+.griditem {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+}
+.gridlabel {
+  color: rgba(255, 255, 255, 0.8);
+}

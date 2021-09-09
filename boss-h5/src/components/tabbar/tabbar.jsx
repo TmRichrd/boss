@@ -35,7 +35,7 @@ export default class Tabbars extends Component {
       {
         key: '/',
         title: '首页',
-        icon: <HomeOutlined twoToneColor="#eb2f96"/>,
+        icon: <HomeOutlined/>,
       },
       {
         key: 'todo',

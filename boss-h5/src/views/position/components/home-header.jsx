@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Button } from 'antd-mobile'
+import { Button, Space } from 'antd-mobile'
+import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 export default class HomeHeader extends Component {
   constructor(props) {
     super(props)
@@ -7,7 +8,7 @@ export default class HomeHeader extends Component {
   }
   render() {
     let { title } = this.props
-    let loginStatus = false
+    let loginStatus = localStorage.getItem('token') || ''
     // 处理渲染逻辑
     let userLogin
     if (!loginStatus) {
@@ -16,7 +17,7 @@ export default class HomeHeader extends Component {
           size="small"
           style={{
             borderRadius: '15px',
-            color: '#5bd4c7',
+            color: '#1677ff',
             fontSize: '12px',
             height: '25px',
             lineHeight: '25px',
@@ -30,17 +31,17 @@ export default class HomeHeader extends Component {
     } else {
       userLogin = (
         <div className="flex">
-          {/* <Space> */}
-            {/* <Icon type="plus" size="sm" /> */}
-            {/* <Icon type="search" size="sm" /> */}
-          {/* </Space> */}
+          <Space size={10}>
+            <PlusOutlined style={{ fontSize: '20px' }} />
+            <SearchOutlined style={{ fontSize: '20px' }} />
+          </Space>
         </div>
       )
     }
     return (
       <div
         className="p-4 flex justify-between items-center"
-        style={{ background: '#5bd4c7', color: '#fff' }}
+        style={{ background: '#1677ff', color: '#fff' }}
       >
         <span className="text-base">{title}</span>
         {userLogin}
