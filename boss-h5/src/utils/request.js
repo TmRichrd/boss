@@ -1,6 +1,4 @@
 import axios from "axios"
-import { Toast } from "antd-mobile"
-import { Redirect } from "react-router-dom"
 const request = axios.create({
   timeout: 10000,
 });

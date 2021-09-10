@@ -4,7 +4,6 @@ import userStore from '../../store'
 import style from './my.module.css'
 import { SettingOutlined, EditOutlined } from '@ant-design/icons'
 import { Image, Grid } from 'antd-mobile'
-import { Link } from "react-router-dom"
 export default class My extends Component {
   constructor(props) {
     super(props)
@@ -18,6 +17,9 @@ export default class My extends Component {
   componentWillUnmount() {
     this.unsubscribe()
   }
+  editResume = () => {
+    this.props.history.push('/resume')
+  }
   render() {
     return (
       <div>
@@ -28,7 +30,7 @@ export default class My extends Component {
           <div className={style.userInfo}>
             <div className={style.names}>
               <p className={style.name}>{userStore.getState().user.name}</p>
-              <p className="flex items-center mt-1">
+              <p className="flex items-center mt-1" onClick={this.editResume}>
                 <EditOutlined
                   style={{ fontSize: '16px', marginRight: '5px' }}
                 />

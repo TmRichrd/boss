@@ -8,6 +8,7 @@ import { mailOptions } from '../../../config/config.mail';
 import { send } from '../../../utils';
 import { CacheManager } from '@midwayjs/cache';
 import { Context, Application } from 'egg';
+import { Resume } from '../../resume/entity/resume';
 @Provide()
 export class UsersService {
   @Inject()
@@ -22,6 +23,9 @@ export class UsersService {
   @InjectEntityModel(User)
   userModel: Repository<User>;
 
+  @InjectEntityModel(Resume)
+  resumeModel: Repository<Resume>;
+
   async saveUser(login: loginInterFace) {
     const { email, code } = login;
     let codes = await this.cache.get(`${email}`);
@@ -31,14 +35,17 @@ export class UsersService {
       return { code: 201, data: {}, message: '验证码有误，请重新输入' };
     if (code === codes) {
       const userQ = await this.userModel.findOne({ email });
-      if (userQ.id) return this.userLogin(login);
+      if (userQ) return this.userLogin(login);
       return this.register(login);
     }
   }
   async userLogin(login: loginInterFace) {
     const { email } = login;
     let user = await this.userModel.findOne({ email });
-    const token = this.app.jwt.sign({ id: user.id },this.app.config.jwt.secret);
+    const token = this.app.jwt.sign(
+      { id: user.id },
+      this.app.config.jwt.secret
+    );
     return {
       code: 200,
       data: user,
@@ -47,6 +54,9 @@ export class UsersService {
     };
   }
   async register(login: loginInterFace) {
+    let resume = new Resume();
+    resume.advantage = '';
+    const resumeId =  await this.resumeModel.save(resume);
     const { email } = login;
     let user = new User();
     user.name = email;
@@ -57,9 +67,14 @@ export class UsersService {
     user.status = 1;
     user.headImg = 'https://avatars.githubusercontent.com/u/49671013?s=120&v=4';
     user.createTime = new Date();
+    user.resumeId = resumeId.id
     const userResult = await this.userModel.save(user);
+
     // 生成token
-    const token = this.app.jwt.sign({id: userResult.id,},this.app.config.jwt.secret);
+    const token = this.app.jwt.sign(
+      { id: userResult.id },
+      this.app.config.jwt.secret
+    );
     let Users = await this.userModel.findOne({ id: userResult.id });
     return {
       code: 200,

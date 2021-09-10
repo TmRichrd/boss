@@ -43,7 +43,7 @@ export class User {
   birthday: Date;
 
   @Column({nullable:true})
-  resumeId: string; // 在线简历Id
+  resumeId: number; // 在线简历Id
 
   @Column({nullable:true})
   fileresumeId: string; // 上传文件简历Id

@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Switch } from 'react-router-dom';
 // import Home from "./views/home/home.jsx"; //引入的组件
 // import PositionDetail from "./views/position-detail/position-detail.jsx"
 // import Login from './views/login/login.jsx';

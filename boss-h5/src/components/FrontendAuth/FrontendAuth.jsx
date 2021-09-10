@@ -8,7 +8,6 @@ class FrontendAuth extends Component {
     const { routerConfig, location } = this.props
     const { pathname } = location
     const token = localStorage.getItem('token')
-    const user = JSON.parse(localStorage.getItem('user'))
     const targetRouterConfig = routerConfig.find(
       (item) => item.path == pathname
     )
