@@ -13,6 +13,7 @@ export default class Position extends Component {
     return (
       <div className="">
         <HomeHeader title={this.state.title} history={this.props.history} />
+        
       </div>
     )
   }
